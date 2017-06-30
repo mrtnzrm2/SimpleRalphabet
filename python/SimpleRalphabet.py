@@ -17,11 +17,11 @@ class SimpleRalphabet:
 		self.axis2for = Axis2Formula
 		self.output = OutputName
 		self.a1 = r.RooRealVar("Axis1_"+name,"a1_"+name, self.axis1min, self.axis1max)
-		outputfile = r.TFile('%s.root'%(OutputName),"recreate")
-		workspace = r.RooWorkspace("w","workspace")
+		self.outputfile = r.TFile('%s.root'%(OutputName),"recreate")
+		self.workspace = r.RooWorkspace("w","workspace")
 		#category = r.RooCategory("sample","sample")
 		H = self.simpleRalphabet()
-		self.setWorkspace(H,workspace)
+		self.setWorkspace(H)
 
 	def simpleRalphabet(self , name="pseudocat"):
 		rooH=[]
@@ -38,8 +38,8 @@ class SimpleRalphabet:
 				fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(DecorVar), h)
 			rooH.append(fH)
 		return rooH
-	def setWorkspace(self, lHis, workspace):
+	def setWorkspace(self, lHis):
 		for lh in lHis:
-			getattr(workspace,'import')(lh)	
+			getattr(self.workspace,'import')(lh)	
 			#workspace.import(lh)
-		workspace.writeToFile(self.output+"_.root")
+		workspace.writeToFile(self.output++"_.root")
