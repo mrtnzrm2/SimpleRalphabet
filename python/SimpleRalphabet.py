@@ -42,4 +42,4 @@ class SimpleRalphabet:
 		for lh in lHis:
 			getattr(self.workspace,'import')(lh)	
 			#workspace.import(lh)
-		workspace.writeToFile(self.output++"_.root")
+		workspace.writeToFile(self.output+"_.root")
