@@ -7,6 +7,7 @@ import sys
 import time
 import array
 import re
+from ROOT import std,RooDataHist
 
 class SimpleRalphabet:
 	def __init__(self , Set_Of_Input_Histograms , Axis1Min , Axis1Max , Axis2Formula="" , OutputName="test", name="ps"):
@@ -41,4 +42,4 @@ class SimpleRalphabet:
 		for lh in lHis:
 			getattr(workspace,'import')(lh)	
 			#workspace.import(lh)
-		workspace.writeToFile(self.output++"_.root")
+		workspace.writeToFile(self.output+"_.root")
