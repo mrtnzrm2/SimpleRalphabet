@@ -21,7 +21,7 @@ class SimpleRalphabet:
 		self.workspace = r.RooWorkspace("w","workspace")
 		#category = r.RooCategory("sample","sample")
 		H = self.simpleRalphabet()
-		self.setWorkspace(H)
+		#self.setWorkspace(H)
 
 	def simpleRalphabet(self , name="pseudocat"):
 		rooH=[]
@@ -30,12 +30,15 @@ class SimpleRalphabet:
 		self.a2 = r.RooRealVar("Axis2_"+name, "a2_"+name, min_, max_)
 		
 		for h,n in zip(self.histograms,range(len(self.histograms))):
-
+			print h,n
 			#print type(r.RooArgList(self.a2) )
 			fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(self.a2) , h)
+			print fH
 			if self.axis2for is not "":
                         	DecorVar = r.RooFormulaVar("DecoVar_"+name, self.axis2for, r.RooArgList(self.a1,self.a2))
 				fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(DecorVar), h)
+				
+			fH.Print()
 			rooH.append(fH)
 		return rooH
 	def setWorkspace(self, lHis):
