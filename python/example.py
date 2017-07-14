@@ -1,7 +1,9 @@
 from SimpleRalphabet import SimpleRalphabet
 import ROOT as r
 
+r.gROOT.SetBatch()
 
+c1 = r.TCanvas("a","a",200,400)
 #gaussian_50 = TF1("gaussian_50","r.Gaus(x,50,25)",0,100)
 #h1 = r.TH2F("a","a",50,0,100,5,200,1000)
 #h2 = r.TH2F("b","b",50,0,100,5,200,1000)
@@ -20,8 +22,17 @@ for h in H:
 		#r.gBenchmark.Start( 'fillrandom' )
 		rand.SetSeed(i)
 		p = rand.Uniform(0,100)
+		#print p
 		h.Fill(p)	
 #	h.FillRandom("gaus",10000)
-SimpleRalphabet(H,0,100,"@0+@1")
+
+#H[0].Draw()
+#c1.SaveAs("he1.pdf")
+#H[1].Draw()
+#c1.SaveAs("he2.pdf")
+
+
+#SimpleRalphabet(H,0,100,Axis2Formula="@0*@1")
+SimpleRalphabet(H,0,100)
 
 

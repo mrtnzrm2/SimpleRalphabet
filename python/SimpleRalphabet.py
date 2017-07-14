@@ -21,28 +21,33 @@ class SimpleRalphabet:
 		self.workspace = r.RooWorkspace("w","workspace")
 		#category = r.RooCategory("sample","sample")
 		H = self.simpleRalphabet()
-		#self.setWorkspace(H)
+		#H[0].Print()
+		#xframe = r.RooPlot("a","a",self.a1,self.axis1min,self.axis1max,50)
+		#H[0].plotOn(xframe)
+		#xframe.Draw()
+		self.setWorkspace(H)
 
 	def simpleRalphabet(self , name="pseudocat"):
 		rooH=[]
 		min_ = self.histograms[0].GetXaxis().GetBinLowEdge(1)
 		max_ = self.histograms[0].GetXaxis().GetBinUpEdge(self.histograms[0].GetXaxis().GetNbins())
-		self.a2 = r.RooRealVar("Axis2_"+name, "a2_"+name, min_, max_)
-		
+		self.a2 = r.RooRealVar("Axis2_"+name, "a2_"+name, min_,max_)
+		lHist = r.RooArgList()
+		for n in range(1,self.histograms[0].GetNbinsX()+1):
+			lHist.add(self.a2)
 		for h,n in zip(self.histograms,range(len(self.histograms))):
-			print h,n
-			#print type(r.RooArgList(self.a2) )
-			fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(self.a2) , h)
-			print fH
-			if self.axis2for is not "":
-                        	DecorVar = r.RooFormulaVar("DecoVar_"+name, self.axis2for, r.RooArgList(self.a1,self.a2))
-				fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(DecorVar), h)
-				
-			fH.Print()
+			#print h,n
+			fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 ,  lHist, h)
+			#self.a1.Print()
+			#self.a2.Print()
+			#if self.axis2for is not "":
+                        #	DecorVar = r.RooFormulaVar("DecoVar_"+name, "DecoVar_"+name ,self.axis2for, r.RooArgList(self.a1,self.a2))
+			#	fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 , r.RooArgList(DecorVar), h)
+			#fH.getNorm()	
 			rooH.append(fH)
 		return rooH
 	def setWorkspace(self, lHis):
 		for lh in lHis:
-			getattr(self.workspace,'import')(lh)	
+			getattr(self.workspace,'import')(lh,r.RooFit.RecycleConflictNodes())	
 			#workspace.import(lh)
-		workspace.writeToFile(self.output+"_.root")
+		self.workspace.writeToFile(self.output+"_.root")
