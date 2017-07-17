@@ -32,7 +32,7 @@ for h in H:
 #c1.SaveAs("he2.pdf")
 
 
-#SimpleRalphabet(H,0,100,Axis2Formula="@0*@1")
-SimpleRalphabet(H,0,100)
+SimpleRalphabet(H,250,300,Axis2Formula="@0+@1")
+#SimpleRalphabet(H,0,100)
 
 
