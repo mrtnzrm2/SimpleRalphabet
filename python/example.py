@@ -9,10 +9,10 @@ c1 = r.TCanvas("a","a",200,400)
 #h2 = r.TH2F("b","b",50,0,100,5,200,1000)
 #h3 = r.TH2F("c","c",50,0,100,5,200,1000)
 #h4 = r.TH2F("d","d",50,0,100,5,200,1000)
-h1 = r.TH1F("a","a",50,0,100)
-h2 = r.TH1F("b","b",50,0,100)
-h3 = r.TH1F("c","c",50,0,100)
-h4 = r.TH1F("d","d",50,0,100)
+h1 = r.TH1F("a","a",50,50,1000)
+h2 = r.TH1F("b","b",50,50,1000)
+h3 = r.TH1F("c","c",50,50,1000)
+h4 = r.TH1F("d","d",50,50,1000)
 H=[h1,h2,h3,h4]
 rand = r.TRandom()
 for h in H:
@@ -32,7 +32,8 @@ for h in H:
 #c1.SaveAs("he2.pdf")
 
 
-SimpleRalphabet(H,250,300,Axis2Formula="@0+@1")
-#SimpleRalphabet(H,0,100)
+#SimpleRalphabet(H,250,300,Axis2Formula="log(sqrt(m*m+pt*pt))")
+#SimpleRalphabet(H,250,300,Axis2Formula="log(sqrt(@0*@0+@1*@1))")
+SimpleRalphabet(H,0,100)
 
 

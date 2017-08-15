@@ -19,20 +19,20 @@ class SimpleRalphabet:
 		self.outputfile = r.TFile('%s.root'%(OutputName),"recreate")
 		self.workspace = r.RooWorkspace("w","workspace")
 		#category = r.RooCategory("sample","sample")
-		H = self.simpleRal_v1()
-		#H = self.simpleRal_v2()
+		#H = self.simpleRal_v1()
+		H = self.simpleRal_v2()
 		self.setWorkspace(H)
-
-	def simpleRal_v1(self , name="pseudocat"):
+	def simpleRal_v2(self , name="pseudocat"):
 		rooH=[]
 		min_ = self.histograms[0].GetXaxis().GetBinLowEdge(1)
 		max_ = self.histograms[0].GetXaxis().GetBinUpEdge(self.histograms[0].GetXaxis().GetNbins())
-		self.a1 = r.RooRealVar("Axis1_"+name,"A1_"+name, self.axis1min, self.axis1max)
-		lVar2 = r.RooRealVar("Axis2_"+name, "A2_"+name, min_,max_)			
+		self.a1 = r.RooRealVar("m","m", self.axis1min, self.axis1max)
+		#print int(min_),max_
+		lVar2 = r.RooRealVar("pt", "pt", int(min_),int(max_))			
 		self.a2 = lVar2
 		lHist = r.RooArgList()
                 if self.axis2for is not "":
-			self.a2 = r.RooFormulaVar("DecoVar_"+name, "DecoVar_"+name,self.axis2for,r.RooArgList(self.a1,lVar2))
+			self.a2 = r.RooFormulaVar("DecoVar_"+name, "DecoVar_"+name,self.axis2for,r.RooArgList(lVar2,self.a1))
 		for n in range(1,self.histograms[0].GetNbinsX()+1):
 			lHist.add(self.a2)
 		self.a1.Print()
@@ -41,21 +41,22 @@ class SimpleRalphabet:
 			fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 ,  lHist, h)
 			rooH.append(fH)
 		return rooH
-	def simpleRal_v2(self , name="pseudocat"):
+
+	def simpleRal_v1(self , name="pseudocat"):
 		rooH=[]
 		min_ = self.histograms[0].GetXaxis().GetBinLowEdge(1)
 		max_ = self.histograms[0].GetXaxis().GetBinUpEdge(self.histograms[0].GetXaxis().GetNbins())
-		lHist = r.RooArgList()
-		self.a1 = r.RooRealVar("Axis1_"+name,"A1_"+name, self.axis1min, self.axis1max)
-		lVar2 = r.RooRealVar("Axis2_"+name, "A2_"+name, min_,max_)			
-		lVar2.setBins(self.histograms[0].GetNbinsX())
+		self.a1 = r.RooRealVar("m","m", self.axis1min/100, self.axis1max/100)
+		#print int(min_),max_
+		lVar2 = r.RooRealVar("pt", "pt", int(min_),int(max_))			
 		self.a2 = lVar2
+		lHist = r.RooArgList()
                 if self.axis2for is not "":
 			self.a2 = r.RooFormulaVar("DecoVar_"+name, "DecoVar_"+name,self.axis2for,r.RooArgList(self.a1,lVar2))
-		self.a1.Print()
-		self.a2.Print()
 		for n in range(1,self.histograms[0].GetNbinsX()+1):
 			lHist.add(self.a2)
+		self.a1.Print()
+		self.a2.Print()
 		for h,n in zip(self.histograms,range(len(self.histograms))):
 			fH = r.RooParametricHist("RooParametricHist_"+name+str(n),"RooParametricHist_"+name+str(n), self.a1 ,  lHist, h)
 			rooH.append(fH)
